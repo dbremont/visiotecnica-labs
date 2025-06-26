@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Graph with Local Data</title>
+    <style>
+        #chart {
+            width: 800px;
+            height: 500px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart"></div>
+
+    <!-- Include Lightweight Charts library -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
+    <script>
+        // Create a chart instance
+        const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+            width: 800,
+            height: 500,
+            layout: {
+                backgroundColor: '#ffffff',
+                textColor: '#000',
+            },
+            grid: {
+                vertLines: {
+                    color: '#e0e0e0',
+                },
+                horzLines: {
+                    color: '#e0e0e0',
+                },
+            },
+            priceScale: {
+                borderColor: '#cccccc',
+            },
+            timeScale: {
+                borderColor: '#cccccc',
+            },
+        });
+
+        // Add a line series
+        const lineSeries = chart.addLineSeries();
+
+        // Initial data (local data)
+        const initialData = [
+            { time: '2023-10-01', value: 100 },
+            { time: '2023-10-02', value: 105 },
+            { time: '2023-10-03', value: 110 },
+            { time: '2023-10-04', value: 115 },
+            { time: '2023-10-05', value: 120 },
+        ];
+
+        // Set initial data
+        lineSeries.setData(initialData);
+
+        // Function to generate random data
+        function generateRandomData(lastDataPoint) {
+            const randomChange = (Math.random() - 0.5) * 5; // Random change in value
+            const newValue = lastDataPoint.value + randomChange; // Calculate the new value
+
+            const newDate = new Date(lastDataPoint.time);
+            newDate.setDate(newDate.getDate() + 1); // Add 1 day
+
+            return {
+               time: newDate.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+               value: parseFloat(newValue.toFixed(2)), // Optionally round to 2 decimal places
+            };
+        }
+
+        // Simulate real-time updates
+        let lastDataPoint = initialData[initialData.length - 1];
+        setInterval(() => {
+            console.log(lastDataPoint)
+            const newDataPoint = generateRandomData(lastDataPoint);
+            lineSeries.update( structuredClone(newDataPoint));
+            lastDataPoint = newDataPoint;
+        }, 1000); // Update every 1 second
+    </script>
+</body>
+</html>

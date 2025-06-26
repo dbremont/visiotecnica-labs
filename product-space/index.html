@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominican Republic Product Space (2023)</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            background: white;
+        }
+        .legend {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .color-box {
+            width: 12px;
+            height: 12px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dominican Republic in the Product Space (2023)</h1>
+    <canvas id="productSpaceCanvas" width="1200" height="700"></canvas>
+    <div class="legend">
+        <div class="legend-item"><div class="color-box" style="background: pink;"></div>Services</div>
+        <div class="legend-item"><div class="color-box" style="background: green;"></div>Textiles</div>
+        <div class="legend-item"><div class="color-box" style="background: yellow;"></div>Agriculture</div>
+        <div class="legend-item"><div class="color-box" style="background: tan;"></div>Stone</div>
+        <div class="legend-item"><div class="color-box" style="background: peru;"></div>Minerals</div>
+        <div class="legend-item"><div class="color-box" style="background: brown;"></div>Metals</div>
+        <div class="legend-item"><div class="color-box" style="background: violet;"></div>Chemicals</div>
+        <div class="legend-item"><div class="color-box" style="background: purple;"></div>Vehicles</div>
+        <div class="legend-item"><div class="color-box" style="background: steelblue;"></div>Machinery</div>
+        <div class="legend-item"><div class="color-box" style="background: turquoise;"></div>Electronics</div>
+        <div class="legend-item"><div class="color-box" style="background: grey;"></div>Other</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("productSpaceCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Sample data to visualize, replace with real product space data
+        const nodes = [
+            {x: 200, y: 300, r: 15, color: "green"},
+            {x: 400, y: 350, r: 20, color: "yellow"},
+            {x: 600, y: 200, r: 10, color: "peru"},
+            {x: 700, y: 500, r: 25, color: "turquoise"},
+            {x: 900, y: 400, r: 18, color: "purple"},
+            {x: 1100, y: 300, r: 12, color: "steelblue"},
+        ];
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (const node of nodes) {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.r, 0, 2 * Math.PI);
+                ctx.fillStyle = node.color;
+                ctx.fill();
+                ctx.strokeStyle = "#aaa";
+                ctx.stroke();
+            }
+        }
+
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Space Hover Connections</title>
+  <style>
+    body { font-family: sans-serif; background: #f5f5f5; }
+    svg { border: 1px solid #ccc; background: white; }
+    .node { cursor: pointer; }
+    .node circle { transition: r 0.2s; }
+  </style>
+</head>
+<body>
+  <h2>Product Space Example (SVG + Hover Links)</h2>
+  <svg id="productSpace" width="800" height="600"></svg>
+
+  <script>
+    // Example data (you can dynamically generate this from JSON)
+    const data = [
+      {
+        productId: "product-HS12-1",
+        name: "Textiles",
+        x: 150,
+        y: 100,
+        topParentId: "product-HS12-1"
+      },
+      {
+        productId: "product-HS12-2",
+        name: "Shoes",
+        x: 300,
+        y: 150,
+        topParentId: "product-HS12-1"
+      },
+      {
+        productId: "product-HS12-3",
+        name: "Furniture",
+        x: 500,
+        y: 100,
+        topParentId: "product-HS12-1"
+      },
+      {
+        productId: "product-HS12-4",
+        name: "Electronics",
+        x: 400,
+        y: 300,
+        topParentId: "product-HS12-4"
+      }
+    ];
+
+    const svg = document.getElementById("productSpace");
+
+    // Draw nodes
+    data.forEach(d => {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      group.setAttribute("class", "node");
+      group.setAttribute("data-id", d.productId);
+      group.setAttribute("data-top-parent", d.topParentId);
+
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", d.x);
+      circle.setAttribute("cy", d.y);
+      circle.setAttribute("r", 20);
+      circle.setAttribute("fill", "steelblue");
+
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("x", d.x);
+      label.setAttribute("y", d.y + 35);
+      label.setAttribute("text-anchor", "middle");
+      label.setAttribute("font-size", "12");
+      label.textContent = d.name;
+
+      group.appendChild(circle);
+      group.appendChild(label);
+      svg.appendChild(group);
+
+      // Hover logic
+      group.addEventListener("mouseenter", () => {
+        const connections = data.filter(n => n.topParentId === d.topParentId && n.productId !== d.productId);
+        connections.forEach(target => {
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", d.x);
+          line.setAttribute("y1", d.y);
+          line.setAttribute("x2", target.x);
+          line.setAttribute("y2", target.y);
+          line.setAttribute("stroke", "gray");
+          line.setAttribute("stroke-width", 1);
+          line.setAttribute("class", "connection-line");
+          svg.insertBefore(line, svg.firstChild); // Draw behind nodes
+        });
+      });
+
+      group.addEventListener("mouseleave", () => {
+        document.querySelectorAll(".connection-line").forEach(line => line.remove());
+      });
+    });
+  </script>
+</body>
+</html>
